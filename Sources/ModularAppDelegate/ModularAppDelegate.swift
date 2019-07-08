@@ -4,7 +4,7 @@ import UIKit
 
 open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
-    public let delegates: [UIApplicationDelegate] = []
+    public let delegates: [UIApplicationDelegate]
 
     public init(_ delegates: [UIApplicationDelegate]) {
         self.delegates = delegates
