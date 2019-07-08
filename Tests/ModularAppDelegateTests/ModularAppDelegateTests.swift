@@ -6,12 +6,11 @@ import UIKit
 
 final class ModularAppDelegateTests: XCTestCase {
     func testDidFinishLaunching() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        let tmad = TestModularAppDelegate()
+        let tmadEmpty = TestModularAppDelegate([])
+        XCTAssert(tmadEmpty.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
+
+        let tmad = TestModularAppDelegate([TestAppDelegate()])
         XCTAssert(tmad.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
-        XCTAssert(false)
     }
 
     static var allTests = [
@@ -21,21 +20,19 @@ final class ModularAppDelegateTests: XCTestCase {
 
 
 class TestModularAppDelegate: ModularAppDelegate {
-    override var modules: [UIApplicationDelegate] = [TestAppDelegate()]
 
 }
-class TestAppDelegate: UIApplicationDelegate {
+
+class TestAppDelegate: UIResponder, UIApplicationDelegate {
     open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        return false
+        return true
     }
-
+    
 }
+
 #else
 final class ModularAppDelegateTests: XCTestCase {
     func testDidFinishLaunching() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
         XCTAssert(false)
     }
 
