@@ -10,7 +10,7 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
         // Default Return
 
         return self.modules.reduce(into: true) { result, delegate in
-            if delegate.application(application, didFinishLaunchingWithOptions: launchOptions) == false {
+            if delegate.application?(application, didFinishLaunchingWithOptions: launchOptions) == false {
                 result = false
             }
         }
