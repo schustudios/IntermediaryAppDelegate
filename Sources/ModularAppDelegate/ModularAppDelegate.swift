@@ -4,11 +4,16 @@ import UIKit
 
 open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
-    var modules: [UIApplicationDelegate] = []
+    open var modules: [UIApplicationDelegate] = []
 
     open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        return true
+        // Default Return
+
+        return self.modules.reduce(into: true) { result, delegate in
+            if delegate.application(application, didFinishLaunchingWithOptions: launchOptions) == false {
+                result = false
+            }
+        }
     }
 
 }
