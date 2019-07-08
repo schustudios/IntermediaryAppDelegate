@@ -103,9 +103,9 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    open func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
+    open func applicationProtectedDataWillBecomeUnavailable(_ application: UIApplication) {
         delegates.forEach {
-            $0.applicationProtectedDataDidBecomeAvailable?(application)
+            $0.applicationProtectedDataWillBecomeUnavailable?(application)
         }
     }
 
@@ -206,7 +206,7 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    
+
 
 }
 
