@@ -4,7 +4,7 @@ import UIKit
 
 open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
-    var delegates: [UIApplicationDelegate] = []
+    public var delegates: [UIApplicationDelegate] = []
 
     public init(_ delegates: [UIApplicationDelegate]) {
         self.delegates = delegates
@@ -68,8 +68,163 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: App Lifecycle Events
 
+    open func applicationDidBecomeActive(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationDidBecomeActive?(application)
+        }
+    }
 
+    open func applicationWillResignActive(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationWillResignActive?(application)
+        }
+    }
+    open func applicationDidEnterBackground(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationDidEnterBackground?(application)
+        }
+    }
+    open func applicationWillEnterForeground(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationWillEnterForeground?(application)
+        }
+    }
+    open func applicationWillTerminate(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationWillTerminate?(application)
+        }
+    }
 
+    // MARK: Environment Changes
+
+    open func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationProtectedDataDidBecomeAvailable?(application)
+        }
+    }
+
+    open func applicationProtectedDataDidBecomeAvailable(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationProtectedDataDidBecomeAvailable?(application)
+        }
+    }
+
+    open func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationDidReceiveMemoryWarning?(application)
+        }
+    }
+
+    open func applicationSignificantTimeChange(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationSignificantTimeChange?(application)
+        }
+    }
+
+    // MARK: App State Restoration
+
+    open func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return delegates.reduce(into: false) { result, delegate in
+            if delegate.application?(application, shouldSaveApplicationState: coder) == true {
+                result = true
+            }
+        }
+
+    }
+
+    open func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+        return delegates.reduce(into: false) { result, delegate in
+            if delegate.application?(application, shouldRestoreApplicationState: coder) == true {
+                result = true
+            }
+        }
+    }
+
+    open func application(_ application: UIApplication, viewControllerWithRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+        for delegate in delegates {
+            if let result = delegate.application?(application, viewControllerWithRestorationIdentifierPath: identifierComponents, coder: coder) {
+                return result
+            }
+        }
+
+        return nil
+    }
+
+    open func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
+        delegates.forEach {
+            $0.application?(application, willEncodeRestorableStateWith: coder)
+        }
+    }
+
+    open func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
+        delegates.forEach {
+            $0.application?(application, didDecodeRestorableStateWith: coder)
+        }
+    }
+
+    // MARK: Downloading Data in the Background
+    open func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+
+        // This method check each delegate for the capability to respond to this method.
+
+        let selector = #selector(UIApplicationDelegate.application(_:handleEventsForBackgroundURLSession:completionHandler:))
+
+        guard delegates.forEach(with: selector, {
+            $0.application?(application,
+                            handleEventsForBackgroundURLSession: identifier,
+                            completionHandler: completionHandler)
+        }) else {
+            completionHandler()
+        }
+
+    }
+
+    // MARK: Remote Notification Registration
+
+    open func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        delegates.forEach {
+            $0.application?(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
+        }
+    }
+
+    open func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        delegates.forEach {
+            $0.application?(application, didFailToRegisterForRemoteNotificationsWithError: error)
+        }
+    }
+
+    open func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+
+        let selector = #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:))
+
+        guard delegates.forEach(with: selector, {
+            $0.application?(application,
+                            didReceiveRemoteNotification: userInfo,
+                            fetchCompletionHandler: completionHandler)
+        }) else {
+            completionHandler(.failed)
+        }
+    }
+
+    
+
+}
+
+extension Array where Element == UIApplicationDelegate {
+
+    /// Checks if each object in the array can respond to the selector, and calls the closure on that element.
+    /// Return: Returns True is an element responded, and returns false if no element responded.
+    func forEach(with selector: Selector, _ closure: (Element) -> Void) -> Bool {
+
+        // This method check each delegate for the capability to respond to this method.
+
+        return self.reduce(into: false) { result, element in
+            if element.responds(to:selector) {
+                result = true
+                closure(element)
+            }
+        }
+    }
 }
 
 #endif
