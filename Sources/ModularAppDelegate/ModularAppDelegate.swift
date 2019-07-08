@@ -4,7 +4,7 @@ import UIKit
 
 open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
-    open var modules: [UIApplicationDelegate] = []
+    open var modules: [UIApplicationDelegate] { return [] }
 
     open func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Default Return
