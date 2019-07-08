@@ -174,7 +174,7 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
                             handleEventsForBackgroundURLSession: identifier,
                             completionHandler: completionHandler)
         }) else {
-            completionHandler()
+            return completionHandler()
         }
 
     }
@@ -202,7 +202,7 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
                             didReceiveRemoteNotification: userInfo,
                             fetchCompletionHandler: completionHandler)
         }) else {
-            completionHandler(.failed)
+            return completionHandler(.failed)
         }
     }
 
