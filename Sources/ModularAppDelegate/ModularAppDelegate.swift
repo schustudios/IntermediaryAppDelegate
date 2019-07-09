@@ -7,6 +7,9 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
     public let delegates: [UIApplicationDelegate]
 
+    public override init() {
+        delegates = []
+    }
     public init(_ delegates: [UIApplicationDelegate]) {
         self.delegates = delegates
     }
