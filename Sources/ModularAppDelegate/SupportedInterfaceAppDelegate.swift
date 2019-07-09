@@ -9,7 +9,7 @@
 
 import UIKit
 
-protocol SupportedInterfaceAppDelegate: ModularAppDelegate { }
+public protocol SupportedInterfaceAppDelegate: ModularAppDelegate { }
 
 extension SupportedInterfaceAppDelegate {
     // MARK: Managing Interface Geometry
