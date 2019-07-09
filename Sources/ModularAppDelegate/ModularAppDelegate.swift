@@ -237,20 +237,6 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    // MARK: SiriKit Intents
-    open func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let selector = #selector(UIApplicationDelegate.application(_:performFetchWithCompletionHandler:))
-
-        guard delegates.forEach(with: selector, {
-            $0.application?(application,
-                            performFetchWithCompletionHandler: completionHandler)
-        }) else {
-            // Fail if no UISceneConfiguration can be found
-            assertionFailure("No Module Impliments method `application(_:performFetchWithCompletionHandler:)")
-            fatalError("No Module Impliments method `application(_:performFetchWithCompletionHandler:)")
-        }
-    }
-
     // MARK: Handling CloudKit Invitations
     open func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
         delegates.forEach {
