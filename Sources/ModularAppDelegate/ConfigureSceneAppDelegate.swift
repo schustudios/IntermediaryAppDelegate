@@ -9,7 +9,7 @@
 import UIKit
 
 @available(iOS 13.0, *)
-public protocol ConfigureSceneAppDelegate: ModularAppDelegate { }
+public protocol ConfigureSceneAppDelegate: ModularAppDelegate, UISceneDelegate { }
 
 @available(iOS 13.0, *)
 extension ConfigureSceneAppDelegate {
