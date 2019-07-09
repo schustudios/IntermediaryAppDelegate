@@ -13,7 +13,7 @@ public protocol SiriKitAppDelegate: ModularAppDelegate { }
 
 extension SiriKitAppDelegate {
     // MARK: SiriKit Intents
-    open func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    public func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let selector = #selector(UIApplicationDelegate.application(_:performFetchWithCompletionHandler:))
 
         guard delegates.forEach(with: selector, {
