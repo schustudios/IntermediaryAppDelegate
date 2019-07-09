@@ -1,6 +1,7 @@
 
 #if canImport(UIKit)
 import UIKit
+import CloudKit
 
 open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -37,34 +38,6 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    // MARK: UISceneSession Lifecycle
-
-    @available(iOS 13.0, *)
-    open func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-
-        for delegate in delegates {
-            if let result = delegate.application?(application, configurationForConnecting: connectingSceneSession, options: options) {
-                return result
-            }
-        }
-
-        // Fail if no UISceneConfiguration can be found
-        assertionFailure("No Module Impliments method `application(configurationForConnecting: options:)")
-        fatalError("No Module Impliments method `application(configurationForConnecting: options:)")
-    }
-
-    @available(iOS 13.0, *)
-    open func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-
-        delegates.forEach {
-            $0.application?(application, didDiscardSceneSessions: sceneSessions)
-        }
-    }
 
     // MARK: App Lifecycle Events
 
@@ -207,6 +180,108 @@ open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    // MARK: Continue User Activity
+
+    open func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+        return delegates.reduce(into: false) { result, delegate in
+            if delegate.application?(application, willContinueUserActivityWithType: userActivityType) == true {
+                result = true
+            }
+        }
+    }
+
+    open func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        return delegates.reduce(into: false) { result, delegate in
+            if delegate.application?(application, continue: userActivity, restorationHandler: restorationHandler) == true {
+                result = true
+            }
+        }
+    }
+
+    open func application(_ application: UIApplication, didUpdate userActivity: NSUserActivity) {
+        delegates.forEach {
+            $0.application?(application, didUpdate: userActivity)
+        }
+    }
+
+    open func application(_ application: UIApplication, didFailToContinueUserActivityWithType userActivityType: String, error: Error) {
+        delegates.forEach {
+            $0.application?(application,
+                            didFailToContinueUserActivityWithType: userActivityType,
+                            error: error)
+        }
+    }
+
+    open func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+
+        let selector = #selector(UIApplicationDelegate.application(_:performActionFor:completionHandler:))
+
+        guard delegates.forEach(with: selector, {
+            $0.application?(application,
+                            performActionFor: shortcutItem,
+                            completionHandler: completionHandler)
+        }) else {
+            return completionHandler(false)
+        }
+    }
+    // MARK: WatchKit
+    open func application(_ application: UIApplication, handleWatchKitExtensionRequest userInfo: [AnyHashable : Any]?, reply: @escaping ([AnyHashable : Any]?) -> Void) {
+        let selector = #selector(UIApplicationDelegate.application(_:handleWatchKitExtensionRequest:reply:))
+
+        guard delegates.forEach(with: selector, {
+            $0.application?(application,
+                            handleWatchKitExtensionRequest: userInfo,
+                            reply: reply)
+        }) else {
+            return reply(nil)
+        }
+    }
+
+    // MARK: HealthKit
+    open func applicationShouldRequestHealthAuthorization(_ application: UIApplication) {
+        delegates.forEach {
+            $0.applicationShouldRequestHealthAuthorization?(application)
+        }
+    }
+
+    // MARK: Opening URL Specified Resources
+    open func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return delegates.reduce(into: false) { result, delegate in
+            if delegate.application?(app, open: url, options: options) == true {
+                result = true
+            }
+        }
+    }
+
+    // MARK: Disallowing Specified App Extension Types
+    open func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
+        return delegates.reduce(into: true) { result, delegate in
+            if delegate.application?(application, shouldAllowExtensionPointIdentifier: extensionPointIdentifier) == false {
+                result = false
+            }
+        }
+    }
+
+    // MARK: SiriKit Intents
+    open func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let selector = #selector(UIApplicationDelegate.application(_:performFetchWithCompletionHandler:))
+
+        guard delegates.forEach(with: selector, {
+            $0.application?(application,
+                            performFetchWithCompletionHandler: completionHandler)
+        }) else {
+            // Fail if no UISceneConfiguration can be found
+            assertionFailure("No Module Impliments method `application(_:performFetchWithCompletionHandler:)")
+            fatalError("No Module Impliments method `application(_:performFetchWithCompletionHandler:)")
+        }
+    }
+
+    // MARK: Handling CloudKit Invitations
+    open func application(_ application: UIApplication, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
+        delegates.forEach {
+            $0.application?(application, userDidAcceptCloudKitShareWith: cloudKitShareMetadata)
+        }
+    }
 
 }
 

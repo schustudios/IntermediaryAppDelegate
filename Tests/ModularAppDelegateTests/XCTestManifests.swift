@@ -5,7 +5,7 @@ import XCTest
 
 public func allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(ModularAppDelegateTests.allTests),
+        testCase(AppInitTests.allTests),
     ]
 }
 #endif
