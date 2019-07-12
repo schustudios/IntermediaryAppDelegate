@@ -1,7 +1,7 @@
 import XCTest
 
-import ModularAppDelegateTests
+import IntermediaryAppDelegateTests
 
 var tests = [XCTestCaseEntry]()
-tests += ModularAppDelegateTests.allTests()
+tests += AppInitTests.allTests()
 XCTMain(tests)

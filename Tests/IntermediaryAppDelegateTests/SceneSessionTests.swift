@@ -8,14 +8,14 @@ import XCTest
 
 #if canImport(UIKit)
 import UIKit
-@testable import ModularAppDelegate
+@testable import IntermediaryAppDelegate
 
 final class SceneSessionTests: XCTestCase {
 
     @available(iOS 13.0, *)
     func testConfigureForConnection() {
         let delegate = SceneSessionAppDelegate()
-        let tmad = SceneSessionModularAppDelegate([delegate])
+        let tmad = SceneSessionIntermediaryAppDelegate([delegate])
 
         tmad.application(UIApplication.shared, didDiscardSceneSessions: [])
         XCTAssert(delegate.didCallDidDiscardSceneSessions)
@@ -23,7 +23,7 @@ final class SceneSessionTests: XCTestCase {
 }
 
 @available(iOS 13.0, *)
-class SceneSessionModularAppDelegate: ModularAppDelegate, ConfigureSceneAppDelegate { }
+class SceneSessionIntermediaryAppDelegate: IntermediaryAppDelegate, ConfigureSceneAppDelegate { }
 
 @available(iOS 13.0, *)
 class SceneSessionAppDelegate: UIResponder, UIApplicationDelegate {

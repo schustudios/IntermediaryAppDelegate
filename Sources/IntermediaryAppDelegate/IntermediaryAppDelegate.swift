@@ -3,7 +3,7 @@
 import UIKit
 import CloudKit
 
-open class ModularAppDelegate: UIResponder, UIApplicationDelegate {
+open class IntermediaryAppDelegate: UIResponder, UIApplicationDelegate {
 
     public let delegates: [UIApplicationDelegate]
 

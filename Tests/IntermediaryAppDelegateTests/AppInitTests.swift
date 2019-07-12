@@ -2,24 +2,24 @@ import XCTest
 
 #if canImport(UIKit)
 import UIKit
-@testable import ModularAppDelegate
+@testable import IntermediaryAppDelegate
 
 final class AppInitTests: XCTestCase {
     func testAppWillFinishLaunching() {
-        let tmadEmpty = ModularAppDelegate([])
+        let tmadEmpty = IntermediaryAppDelegate([])
         XCTAssert(tmadEmpty.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
 
-        let tmad = ModularAppDelegate([AppInitTestsAppDelegate()])
+        let tmad = IntermediaryAppDelegate([AppInitTestsAppDelegate()])
         XCTAssert(tmad.application(UIApplication.shared, willFinishLaunchingWithOptions: nil))
     }
 
     func testAppDidFinishLaunching() {
         // Test Default Value
-        let tmadEmpty = ModularAppDelegate([])
+        let tmadEmpty = IntermediaryAppDelegate([])
         XCTAssert(tmadEmpty.application(UIApplication.shared, didFinishLaunchingWithOptions: nil))
 
         let delegate = AppInitTestsAppDelegate()
-        let tmad = ModularAppDelegate([delegate])
+        let tmad = IntermediaryAppDelegate([delegate])
         XCTAssert(tmad.application(UIApplication.shared, didFinishLaunchingWithOptions: nil) == false)
 
         tmad.applicationDidFinishLaunching(UIApplication.shared)

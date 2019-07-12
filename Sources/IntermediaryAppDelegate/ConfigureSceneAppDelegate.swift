@@ -9,10 +9,10 @@
 import UIKit
 
 @available(iOS 13.0, *)
-public protocol ConfigureSceneAppDelegate: ModularAppDelegate, UISceneDelegate { }
+public protocol ConfigureSceneIntermediaryAppDelegate: IntermediaryAppDelegate, UISceneDelegate { }
 
 @available(iOS 13.0, *)
-extension ConfigureSceneAppDelegate {
+extension ConfigureSceneIntermediaryAppDelegate {
     // MARK: UISceneSession Lifecycle
 
     public func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -26,8 +26,8 @@ extension ConfigureSceneAppDelegate {
         }
 
         // Fail if no UISceneConfiguration can be found
-        assertionFailure("No Module Impliments method `application(configurationForConnecting: options:)")
-        fatalError("No Module Impliments method `application(configurationForConnecting: options:)")
+        assertionFailure("No Delegate Impliments method `application(configurationForConnecting: options:)")
+        fatalError("No Delegate Impliments method `application(configurationForConnecting: options:)")
     }
 
     public func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {

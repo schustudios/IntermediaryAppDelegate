@@ -9,13 +9,13 @@ import XCTest
 
 #if canImport(UIKit)
 import UIKit
-@testable import ModularAppDelegate
+@testable import IntermediaryAppDelegate
 
 final class AppLifecycleTests: XCTestCase {
 
     func testLifecycleEvents() {
         let delegate = AppLifecycleAppDelegate()
-        let tmad = ModularAppDelegate([delegate])
+        let tmad = IntermediaryAppDelegate([delegate])
 
         tmad.applicationDidBecomeActive(UIApplication.shared)
         XCTAssert(delegate.didCallDidBecomeActive)
