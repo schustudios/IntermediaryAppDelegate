@@ -9,7 +9,7 @@
 
 import UIKit
 
-public class ModuleRemoteNotificationAppDelegate: ModularAppDelegate {
+public class ModularRemoteNotificationAppDelegate: ModularAppDelegate {
 
     // MARK: Remote Notification Registration
 
