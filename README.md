@@ -7,7 +7,25 @@ For more info, check out my [blog post](https://schustudios.com/blog/Intermediar
 ## Usage
 
 1. Create a main UIApplicationDelegate, and subclass either IntermediaryAppDelegate or RemoteNotificationIntermediaryAppDelegate if you need to support remote notifications. Also, add the ConfigureSceneIntermediaryAppDelegate protocol if using SwiftUI.
+
+```
+@UIApplicationMain
+class AppDelegate: IntermediaryAppDelegate {
+}
+```
+
+
 2. Create the new UIApplicationDelegates where each delegate method will be implemented. Each class should be focused around a single responsibility, like managing the lifecycle of a Crash Reporter, handling Remote Notifications, or responding to Deep Links.
+
+```
+class CoreModule: UIResponder, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
+        return true
+    }
+}
+```
+
+
 3. Register the App Delegates in the main UIApplicationDelegate. This is done by simply returning each AppDelegate in the init method of the main UIApplicationDelegate like below:
 
 ```
