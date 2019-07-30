@@ -4,6 +4,8 @@ IntermediaryAppDelegate is a Swift library for splitting a bloated UIApplication
 
 For more info, check out my [blog post](https://schustudios.com/blog/Intermediary-App-Delegate).
 
+![Diagram](docs/diagram.png)
+
 ## Usage
 
 1. Create a main UIApplicationDelegate, and subclass either IntermediaryAppDelegate or RemoteNotificationIntermediaryAppDelegate if you need to support remote notifications. Also, add the ConfigureSceneIntermediaryAppDelegate protocol if using SwiftUI.
@@ -40,6 +42,8 @@ class AppDelegate: RemoteNotificationIntermediaryAppDelegate, ConfigureSceneInte
     }
 }
 ```
+
+Checkout the sample project here: https://github.com/steg132/IntermediaryApp
 
 
 ## Installation
