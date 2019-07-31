@@ -17,13 +17,14 @@ final class SceneSessionTests: XCTestCase {
         let delegate = SceneSessionAppDelegate()
         let tmad = SceneSessionIntermediaryAppDelegate([delegate])
 
-        tmad.application(UIApplication.shared, didDiscardSceneSessions: [])
+        // NOTE: Throws exception on iOS 12 Simulators
+        tmad.application(UIApplication.shared, didDiscardSceneSessions: Set<UISceneSession>())
         XCTAssert(delegate.didCallDidDiscardSceneSessions)
     }
 }
 
 @available(iOS 13.0, *)
-class SceneSessionIntermediaryAppDelegate: IntermediaryAppDelegate, ConfigureSceneAppDelegate { }
+class SceneSessionIntermediaryAppDelegate: IntermediaryAppDelegate, ConfigureSceneIntermediaryAppDelegate { }
 
 @available(iOS 13.0, *)
 class SceneSessionAppDelegate: UIResponder, UIApplicationDelegate {
